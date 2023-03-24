@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
-export default function NavButton({path}) {
+export default function NavButton({path, onPress}) {
     return (
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onPress}>
             <Image style={styles.icon} source={path}/>
         </TouchableOpacity>
     )

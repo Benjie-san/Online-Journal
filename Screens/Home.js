@@ -9,7 +9,14 @@ const m = new Date().getMonth();
 const d = new Date().getDate();
 const today = `${month[m]} ${d}`
 
-export default function Home() {
+
+
+export default function Home({navigation}) {
+    
+    const openBrp = () => {
+        navigation.navigate("BRP");
+        console.log("work?");
+    }
 
     return (
         <View style={styles.container}>
@@ -29,7 +36,7 @@ export default function Home() {
             </TouchableOpacity>
 
             <View style={styles.navContainer}>
-                < NavButton path={path[0]} />
+                < NavButton onPress={()=> {openBrp()} } path={path[0]} />
                 < NavButton path={path[1]} />
                 < NavButton path={path[2]} />
                 < NavButton path={path[3]} />
