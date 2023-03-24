@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import {useFonts} from 'expo-font';
+
+import {setCustomText} from 'react-native-global-props';
+
+import Home from './components/Home';
+
+const customTextProps = {
+  style: {
+    fontSize: 15,
+    fontFamily: "League-Spartan",
+    color: 'black'
+  }
+}
+
+setCustomText(customTextProps);
 
 export default function App() {
+  
+    const [fontsLoaded] = useFonts({
+      "League-Spartan" : require('./assets/fonts/LeagueSpartan-Regular.ttf'),
+      "League-Spartan" : require('./assets/fonts/LeagueSpartan-Regular.ttf'),
+  });
+
+if(!fontsLoaded){
+    return null;
+}
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Home/>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
