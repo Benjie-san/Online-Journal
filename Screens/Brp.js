@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, LayoutAnimation, Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, LayoutAnimation, Image, UIManager} from 'react-native'
 import React, {useState, useEffect} from 'react';
 
 const data = require("../constants/data.json");
@@ -16,13 +16,16 @@ let content = Object.keys(data).map( (key, index) =>
 );
 
 const ExpandableComponent = ({item, onClickFunction}) =>{
-    const [layoutHeight, setlayoutHeight] = useState(0)
+    const [layoutHeight, setlayoutHeight] = useState(0);
+    const [isImageStyle, setIsImageStyle] = useState(styles.caretIcon);
 
     useEffect(() => {
         if(item.isExpanded){
             setlayoutHeight(null);
+            setIsImageStyle(styles.flip);
         } else{
             setlayoutHeight(0);
+            setIsImageStyle(styles.caretIcon);
         }
         
     }, [item.isExpanded])
@@ -31,7 +34,7 @@ const ExpandableComponent = ({item, onClickFunction}) =>{
     <View>
         <TouchableOpacity onPress={onClickFunction} style={styles.months}>
             <Text>{item.category_name}</Text>
-            <Image style={[styles.caretIcon, { transform: 'rotateX(180deg)' }] } source={require("../assets/images/caret-down.svg")} />
+            <Image style={isImageStyle} source={require("../assets/images/caret-down.svg")} />
         </TouchableOpacity>
         <View style={{overflow: "hidden", height: layoutHeight}}>
             {
@@ -51,7 +54,7 @@ const ExpandableComponent = ({item, onClickFunction}) =>{
 }
 
 export default function Brp({}) {
-
+    UIManager.setLayoutAnimationEnabledExperimental(true);
     const [listData, setListData] = useState(content);
     const updateLayout = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -123,6 +126,12 @@ const styles = StyleSheet.create({
         height: 25,
 
     },
+    flip:{
+        width: 25,
+        height: 25,
+        transform: 'rotateX(180deg)',
+    },
+
     dailyEntry:{
         padding: 20,
         height: 50,
@@ -131,6 +140,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderColor: "black",
         borderBottomWidth: 1,
+        backgroundColor: '#fffff',
+    
     },
     check:{
         width: 25,
