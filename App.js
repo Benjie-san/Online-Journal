@@ -19,9 +19,9 @@ setCustomText(customTextProps);
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function App() {  
   
-    const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
       "League-Spartan" : require('./assets/fonts/LeagueSpartan-Regular.ttf'),
       "League-Spartan-M" : require('./assets/fonts/LeagueSpartan-Medium.ttf'),
   });

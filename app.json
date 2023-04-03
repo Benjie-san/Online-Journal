@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "journal",
+    "name": "Journal",
     "slug": "journal",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,10 +22,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.zerephyr.journal"
+      "package": "com.journal.journal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dd3b6738-94dd-4590-b9bd-682aaaf6e6d7"
+      }
     }
   }
 }

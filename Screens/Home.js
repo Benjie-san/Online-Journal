@@ -11,34 +11,29 @@ const m = new Date().getMonth();
 const d = new Date().getDate();
 const today = `${month[m]} ${d}`
 
-//verses setting
-
 const data = require("../constants/data.json");
-
 const verse = data[month[m]][d-1]["verse"];
-
-
 
 export default function Home({navigation}) {
     
     const openBrp = () => {
         navigation.navigate("BRP");
-        console.log("work?");
+
     }
 
     return (
         <View style={styles.container}>
             <View  style={styles.journal}>
-            <Text style={{fontFamily: "League-Spartan-M", fontSize:25}}>Journal 2023</Text>
+            <Text style={{ fontFamily: "League-Spartan-M", fontSize:25}}>Journal 2023</Text>
 
             </View>
             
-            <View style={styles.date}>
+            <View style={[styles.date, styles.spaceBetween]}>
                 <Text>Today's Passage</Text>
                 <Text>{today}</Text>
             </View>
 
-            <TouchableOpacity style={[styles.verse, styles.border]}>
+            <TouchableOpacity style={[styles.verse, styles.border, styles.spaceBetween]}>
                 <Text>{verse}</Text>
                 <Image style={{width: 25, height: 25}}source={require("../assets/images/arrow-right.png")}/>
             </TouchableOpacity>
@@ -77,20 +72,19 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
     },
-
-    date:{
+    spaceBetween:{
         alignContent: "center",
         justifyContent:"space-between", 
         flexDirection: "row",
     },
+    date:{
+    
+    },
     verse:{
         height: 70,
         padding: 10,
-        alignItems: "center",
-        justifyContent:"space-between", 
-        flexDirection: "row",
         backgroundColor: '#fff',
-    
+        alignItems: 'center',
     },
     recentNotes:{
         flex: 1,
