@@ -1,22 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, LayoutAnimation, Image, UIManager} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, LayoutAnimation, Image, Dimensions} from 'react-native'
 import React, {useState, useEffect} from 'react';
 import EntryModal from '../components/EntryModal';
-
-
-const data = require("../constants/data.json");
-
-
-let content = Object.keys(data).map( (key, index) =>
-    (
-        {
-            isExpanded: false,
-            category_name: Object.keys(data)[index],
-            subcategory: [
-                ...data[key]
-            ],
-        }
-    )
-);
+import { FlashList } from "@shopify/flash-list";
 
 const ExpandableComponent = ({item, onClickFunction}) =>{
     const [layoutHeight, setlayoutHeight] = useState(0);
@@ -28,7 +13,6 @@ const ExpandableComponent = ({item, onClickFunction}) =>{
         setModalVisible(modal);
         setVerseProp(verse);
     }
-
     useEffect(() => {
         if(item.isExpanded){
             setlayoutHeight(null);
@@ -37,14 +21,13 @@ const ExpandableComponent = ({item, onClickFunction}) =>{
         } else{
             setlayoutHeight(0);
             setIsImageStyle(styles.flip)
-
-
         }
 
     }, [item.isExpanded])
 
 
     return (
+
     <View>
         <TouchableOpacity onPress={onClickFunction} style={styles.months}>
             <Text>{item.category_name}</Text> 
@@ -60,23 +43,49 @@ const ExpandableComponent = ({item, onClickFunction}) =>{
                     key={key}>
 
                         <Text style={{fontFamily: "League-Spartan",fontSize: 20}}>
-                            {item.verse}
+                            {item.verse}    
                         </Text>
                         <View style={[styles.check, styles.border]}></View>
                     </TouchableOpacity>
                 ))
             }
         </View>
+        {/* <View style={{overflow: "hidden", height: layoutHeight}} >
+            <View style={{ width: Dimensions.get("screen").width-20, height: 50}}>
+                <FlashList
+                    data={ item.subcategory }
+                    estimatedItemSize={75}
+                    keyExtractor={(item, index) => index.toString()} 
+                    renderItem={ ({item, index}) => {
+                        
+                            <TouchableOpacity
+                                onPress ={ ()=> modalFunction(true, item["verse"]) }
+                                style={styles.dailyEntry}
+                                key={index}
+                                >
+                                    <Text style={{fontFamily: "League-Spartan",fontSize: 20}}>
+                                        {item["verse"]}
+                                    </Text>
+                                    <View style={[styles.check, styles.border]}></View>
+                            </TouchableOpacity>
+                            
+                        } 
+                    }
+                />
+            </View>
+        </View> */}
+
         <EntryModal visible={modalVisibile} verse={verseProp} />
     </View>
 
     );
 }
 
-export default function Brp({}) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
+const Brp = ({content}) => {
+    // UIManager.setLayoutAnimationEnabledExperimental(true);
 
     const [listData, setListData] = useState(content);
+
     const updateLayout = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         const array = [...listData];
@@ -94,7 +103,7 @@ export default function Brp({}) {
             <Text>Write your Journal Entry today now!</Text>
         </TouchableOpacity>
 
-        <ScrollView style={[styles.contentContainer, styles.border]} showsHorizontalScrollIndicator={false}>
+        {/* <ScrollView style={[styles.contentContainer, styles.border]} showsHorizontalScrollIndicator={false}>
             {
                 listData.map( (item, key) => (
                     <ExpandableComponent
@@ -106,9 +115,28 @@ export default function Brp({}) {
                     />
                 ))
             }
-        </ScrollView>
-
-
+        </ScrollView> */}
+    
+        <ScrollView>
+            <View style={{ width: Dimensions.get("screen").width-20, height: Dimensions.get("screen").height-0}}>
+                <FlashList 
+                    data={listData}
+                    keyExtractor={(item, index) => index.toString()}
+                    estimatedItemSize={56}
+                    getItemHeight={() => 70}
+                    getItemCount={() => listData.length}
+                    renderItem={ ({item, index}) => 
+                    
+                            <ExpandableComponent
+                                key={item.category_name}
+                                item={item}
+                                onClickFunction={()=>{ updateLayout(index)}}
+                            />
+                    }
+                />
+            </View>
+        </ScrollView> 
+    
     </View>
     )
 }
@@ -156,6 +184,7 @@ const styles = StyleSheet.create({
     },
 
     dailyEntry:{
+        
         padding: 10,
         height: 50,
         justifyContent: "space-between",
@@ -171,3 +200,5 @@ const styles = StyleSheet.create({
         height: 25,
     },
 })
+
+export default Brp;

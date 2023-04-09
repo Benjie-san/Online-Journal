@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from "./Screens/Home";
 import Brp from "./Screens/Brp";
+import data from "./constants/data.json"
 
 const customTextProps = {
   style: {
@@ -19,6 +20,18 @@ setCustomText(customTextProps);
 
 const Stack = createNativeStackNavigator();
 
+let content = Object.keys(data).map( (key, index) =>
+    (
+        {
+            isExpanded: false,
+            category_name: Object.keys(data)[index],
+            subcategory: [  
+                ...data[key]
+            ],
+        }
+    )
+);
+
 export default function App() {  
   
   const [fontsLoaded] = useFonts({
@@ -31,6 +44,7 @@ export default function App() {
   }
 
 const RenderHome = (props) => <Home {...props}  />
+const RenderBrp = (props) => <Brp {...props}  content={content}/>
 
   return (
     <NavigationContainer>
@@ -39,7 +53,7 @@ const RenderHome = (props) => <Home {...props}  />
         options={{headerTitle: '', headerTransparent: true}} 
         component={RenderHome} 
         name="Home"/>
-        <Stack.Screen component={Brp} name="BRP"/>
+        <Stack.Screen component={RenderBrp} name="BRP"/>
       </Stack.Navigator>
     </NavigationContainer>
 

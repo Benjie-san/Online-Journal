@@ -12,6 +12,7 @@ const d = new Date().getDate();
 const today = `${month[m]} ${d}`
 
 const data = require("../constants/data.json");
+
 const verse = data[month[m]][d-1]["verse"];
 
 export default function Home({navigation}) {
