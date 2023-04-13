@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import NavButton from '../components/NavButton';
+import Entry from '../components/Entry';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //for the icons
 const path = [require("../assets/images/brp.png"), require("../assets/images/mirror.png"), require("../assets/images/person.png"), require("../assets/images/info.png"), ];
 
@@ -15,12 +18,25 @@ const data = require("../constants/data.json");
 
 const verse = data[month[m]][d-1]["verse"];
 
+
 export default function Home({navigation}) {
     
+    const [entry, setEntry] = useState([])
+
     const openBrp = () => {
         navigation.navigate("BRP");
 
     }
+
+    const findEntry = async () =>{
+        const result = await AsyncStorage.getItem('entry');
+        if(result !== null) setEntry(JSON.parse(result));
+    }
+
+    useEffect(() => {
+        findEntry();
+    }, []);
+    
 
     return (
         <View style={styles.container}>
@@ -41,6 +57,7 @@ export default function Home({navigation}) {
 
             <View style={[styles.recentNotes, styles.border]}>
                 <Text>Recent Entries</Text>
+                <Entry entry={entry}/>
             </View>
 
             <View style={[styles.navContainer, styles.border]}>

@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from "./Screens/Home";
 import Brp from "./Screens/Brp";
-import data from "./constants/data.json"
+import EntryScreen from './Screens/EntryScreen';
 
 const customTextProps = {
   style: {
@@ -15,22 +15,9 @@ const customTextProps = {
     color: 'black'
   }
 }
-
 setCustomText(customTextProps);
 
 const Stack = createNativeStackNavigator();
-
-let content = Object.keys(data).map( (key, index) =>
-    (
-        {
-            isExpanded: false,
-            category_name: Object.keys(data)[index],
-            subcategory: [  
-                ...data[key]
-            ],
-        }
-    )
-);
 
 export default function App() {  
   
@@ -43,8 +30,10 @@ export default function App() {
       return null;
   }
 
-const RenderHome = (props) => <Home {...props}  />
-const RenderBrp = (props) => <Brp {...props}  content={content}/>
+  const RenderHome = (props) => <Home {...props}  />
+  const RenderBrp = (props) => <Brp {...props} />
+  const RenderEntry = (props) => <EntryScreen {...props} />
+
 
   return (
     <NavigationContainer>
@@ -54,9 +43,11 @@ const RenderBrp = (props) => <Brp {...props}  content={content}/>
         component={RenderHome} 
         name="Home"/>
         <Stack.Screen component={RenderBrp} name="BRP"/>
+        <Stack.Screen component={RenderEntry} name="Daily Entry"/>
+
       </Stack.Navigator>
     </NavigationContainer>
-
+    
   );
 }
 const styles = StyleSheet.create({
